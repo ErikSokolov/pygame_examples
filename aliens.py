@@ -54,5 +54,54 @@ class Player(pg.sprite.Sprite):
     images: List[pg.Surface] = []
 
     def __init__(self, *groups):
-        pg.sprite.Sprite.__init__self, *groups)
-    
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+
+        self.reloading = 0
+        self.origtop = self.rect.top
+        self.facing = -1
+
+    def move(self, direction):
+        if direction:
+            self.facing = direction
+        self.rect.move_ip(direction * self.speed, 0)
+        self.rect = self.rect.clamp(SCREENRECT)
+        if direction < 0:
+            self.image = self.images[0]
+        elif direction > 0:
+            self.image = self.images[1]
+            self.rect.top = self.origtop - (self.rect.left // self.bounce % 2)
+
+        def gunpos(self):
+            pos gunpos(self):
+                pos = self.facing * self.gun_offset + self.rect.centerx
+                return pos, self.rect.top
+
+        class Alien(pg.sprite.Sprite):
+            """An alien space ship. that slowly moves down the screen."""
+
+            speed = 13
+            animcycle = 12
+            images: List[pg.Surface] = []
+
+            def __init__(self, *groups):
+                pg.sprite.Sprite.__init__(self, *groups(
+                    self.image = self.images[0]
+                    self.rect = self.image.get_rect()
+                    self.facing = random.choice((-1, 1)) * Alien.speed
+                    self.frame = 0
+                    if self.facing < 0:
+                        self.rect.right = SCREEN.right
+
+            def update(self, *args, **kwargs):
+            self.rect.move_ip(self.facing, 0)
+            if not SCREENRECT.contains(self.rect):
+                self.facing = -self.facing
+                self.rect.top = self.rect.bottom + 1
+                self.rect = self.rect.clamp(SCREENRECT)
+            self.frame = self.frame + 1 
+            self.image = self.images[self.frame // self. animcycle % 3]
+            
+
+
