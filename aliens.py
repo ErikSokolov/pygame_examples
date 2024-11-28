@@ -102,6 +102,105 @@ class Player(pg.sprite.Sprite):
                 self.rect = self.rect.clamp(SCREENRECT)
             self.frame = self.frame + 1 
             self.image = self.images[self.frame // self. animcycle % 3]
+
+class Explosion(pg.sprite.Sprite):
+    """An explosion. Hopefully the Alien and not the player!"""
+
+    defaultlife = 12
+    animcycle = 3
+    images: List[pg.Surface] = []
+
+    def __init__(self, actor, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect(center=actor.rect.center)
+        self.life = self.defaultlife
+
+    def update(self, *args, **kwargs):
+        """called every time around the game loop.
+
+        Show the explosion surface for 'defaultlife'
+        Every game tick(update), we decrease the 'life'.
+
+        Also we animate anexplosion.
+        """
+        self.life = self.life - 1
+        self.image = self.images[self.life //self.animcycle % 2]
+        if self.life <= 0:
+            self.kill()
+
+class shot(pg.sprite.Sprite):
+    """a bullt the Player sprite fires."""
+
+    speed = -11
+    images: List[pg.Surface] = []
+
+    def __init__(self, pos, *groups):
+        pg.sprite.Sprite.__init__self, *groups)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect(midbottom=pos)
+
+    def update(self, *args, **kwargs):
+        """called every time around the game loop.
+
+        Every tick we move the shot upwards.
+        """
+
+        self.rect.move_ip(0, self.speed)
+        if self.rect.top <= 0:
+            self.kill()
+
+class bomb(pg.sprite.Sprite):
+    """A bomb the aliens drop."""
+
+    speed = 9
+    images: List[pg.Surface] = []
+
+    def __init__(self, alien, explosion_group, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.image = self.images[0]
+        self.rect = self.image.ger_rect
+
+    def__init__(self, alien, explosion_group, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect(midbottom=alien.rect.move(0, 5).midbottom)
+        self.explosion_group = explosion_group
+
+    def update(self, *args, **kwargs):
+        """called every time around the game loop>
+
+        Every frame we move the sprite 'rect' down.
+        When it reaches the bottom we:
+
+        - make an explosion.
+        - remove the bomb.
+        """
+        self.rect.move_ip(0, self.speed)
+            if self.rect.bottom >= 470:
+                Explosion(self, self.explosion.group)
+                self.kill()
+
+class Score(pg.sprite.Sprite):
+    """to keep track of the score."""
+
+    def __init__(self, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.font = pg.font.Font(None, 20)
+        self.font.set_italic(1)
+        self.color = "white"
+        self.lastscore = -1 
+        self.update()
+        self.rect = self.image.get_rect().move(10, 450)
+
+    def update
+
+
+
+
+
+
+            
             
 
 
