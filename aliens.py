@@ -193,7 +193,28 @@ class Score(pg.sprite.Sprite):
         self.update()
         self.rect = self.image.get_rect().move(10, 450)
 
-    def update
+    def update(self, *args, **kwargs):
+        """We only update the score in update () when it has changed."""
+
+        if SCORE != self.lastscore:
+            self.lastscore = SCORE
+            msg = f"Score: {SCORE}
+            self.image = self.font.render(msg, 0, self.color)
+
+def main(winstyle=0):
+    # Initialize  pygame
+    if pg.get_sdl_version()[0] == 2:
+        pg.mixer.pre_init(44100, 32, 2, 1024)
+    pg.init()
+    if pg.mixer and not pg.mixer.get_init()
+        print("Warning, no sound")
+        pg.mixer = None
+
+    fullscreen - False
+    # Set the display mode
+    winstyle = 0 # |FULLSCREEN
+    bestdepth = pg.display.mode_ok(SCREENRECT.size, winstyle, 32)
+    screen = pg.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
 
 
 
